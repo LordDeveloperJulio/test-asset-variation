@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_asset_variation/app/modules/shared/utils/colors_pallete.dart';
 
 import 'app/modules/home/presentation/home_page.dart';
 
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Test - Asset Variation',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: ColorsPallete.primaryColor),
         useMaterial3: true,
       ),
       home: const HomePage(),
