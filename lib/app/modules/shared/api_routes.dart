@@ -1,3 +1,3 @@
 class ApiRoutes {
-  static const String getAssetVariation = 'https://query2.finance.yahoo.com/v8/finance/chart/PETR4.SA';
+  static const String getAssetVariation = '/v8/finance/chart/PETR4.SA';
 }

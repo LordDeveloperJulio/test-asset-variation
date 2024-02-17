@@ -14,6 +14,11 @@ dependencies:
   cupertino_icons: ^1.0.6
   dio: ^5.4.0
   dartz: ^0.10.1
+  bloc: ^8.1.3
+  flutter_bloc: ^8.1.4
+  flutter_modular: ^6.3.2
+  core_network:
+    path: ../core_network
 
 dev_dependencies:
   flutter_test:

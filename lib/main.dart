@@ -1,25 +1,16 @@
+import 'package:core_network/core_network.dart';
 import 'package:flutter/material.dart';
-import 'package:test_asset_variation/app/modules/shared/utils/colors_pallete.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
-import 'app/modules/home/presentation/home_page.dart';
+import 'app/app_module.dart';
+import 'app/app_widget.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Test - Asset Variation',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: ColorsPallete.primaryColor),
-        useMaterial3: true,
-      ),
-      home: const HomePage(),
-    );
-  }
+  CoreNetwork.init(
+    baseUrl: 'https://query2.finance.yahoo.com',
+    isDebug: false,
+  );
+  runApp(ModularApp(module: AppModule(), child: const AppWidget()));
 }
