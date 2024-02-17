@@ -9,6 +9,7 @@ class AppWidget extends StatelessWidget {
     return MaterialApp.router(
       title: 'Test - Asset Variation',
       routerConfig: Modular.routerConfig,
+      debugShowCheckedModeBanner: false,
     ); //added by extension
   }
 }

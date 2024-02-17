@@ -20,6 +20,7 @@ class TextViewWidget extends StatelessWidget {
         fontSize: size,
         color: color,
       ),
+      maxLines: 1,
     );
   }
 }

@@ -5,3 +5,4 @@ export 'meta_entity.dart';
 export 'quote_entity.dart';
 export 'result_entity.dart';
 export 'trading_periods_entity.dart';
+export 'asset_entity.dart';
