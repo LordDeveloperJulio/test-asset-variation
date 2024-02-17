@@ -9,6 +9,7 @@ class GetAssetVariationUseCaseImpl implements GetAssetVariationUseCase {
 
   GetAssetVariationUseCaseImpl({required this.repository});
 
+  @override
   Future<Either<Exception, ChartEntity>> call() async {
     return repository.getAssetVariation();
   }
