@@ -1,4 +1,4 @@
-import 'current_trading_period_entity.dart';
+import 'package:test_asset_variation/app/modules/home/domain/domain.dart';
 
 class MetaEntity {
   final String currency;
@@ -16,7 +16,7 @@ class MetaEntity {
   final int scale;
   final int priceHint;
   final CurrentTradingPeriodEntity currentTradingPeriod;
-  final List<List> tradingPeriods;
+  final List<TradingPeriodsEntity> tradingPeriods;
   final String dataGranularity;
   final String range;
   final List<String> validRanges;
