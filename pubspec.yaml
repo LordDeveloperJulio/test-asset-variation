@@ -18,7 +18,7 @@ dependencies:
   flutter_modular: ^6.3.2
   syncfusion_flutter_charts: ^24.2.6
   core_network:
-    path: ../core_network
+    path: core_network
 #  core_network:
 #    git:
 #      url: https://github.com/LordDeveloperJulio/core-network

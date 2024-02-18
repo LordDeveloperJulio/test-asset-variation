@@ -7,7 +7,6 @@ class AssetDetailResponse {
   final int? volume;
   final double? high;
   final double? low;
-  final double? adjclose;
 
   AssetDetailResponse({
     this.timeStamp,
@@ -16,7 +15,6 @@ class AssetDetailResponse {
     this.volume,
     this.high,
     this.low,
-    this.adjclose,
   });
 
   factory AssetDetailResponse.fromJson(Map<dynamic, dynamic> json) =>
@@ -27,7 +25,6 @@ class AssetDetailResponse {
         volume: json["volume"],
         high: json["high"],
         low: json["low"],
-        adjclose: json["adjclose"],
       );
 
   AssetDetailEntity toEntity() {
@@ -38,7 +35,6 @@ class AssetDetailResponse {
       volume: volume,
       high: high,
       low: low,
-      adjclose: adjclose,
     );
   }
 }

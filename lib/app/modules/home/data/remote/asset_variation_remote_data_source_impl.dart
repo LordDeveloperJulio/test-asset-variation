@@ -17,7 +17,7 @@ class AssetVariationRemoteDataSourceImpl
       {required String asset}) async {
     try {
       final result =
-          await networkClient.get('https://run.mocky.io/v3/1b4f5239-a1d4-4d81-9a9f-088f7df4a895');
+          await networkClient.get(ApiRoutes.getAssetVariation + asset);
       return Right(result.data);
     } catch (error) {
       return Left(Exception(error));

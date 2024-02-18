@@ -6,6 +6,7 @@ import 'package:test_asset_variation/app/modules/home/presentation/home_page.dar
 import 'data/data.dart';
 import 'domain/domain.dart';
 import 'infra/infra.dart';
+import 'presentation/detail_page.dart';
 
 class HomeModule extends Module {
   @override
@@ -24,7 +25,7 @@ class HomeModule extends Module {
           repository: Modular.get<AssetVariationRepository>()),
     );
     i.add<GetAssetsUseCase>(
-          () => GetAssetsUseCaseImpl(
+      () => GetAssetsUseCaseImpl(
           repository: Modular.get<AssetVariationRepository>()),
     );
     //REPOSITORY
@@ -42,5 +43,6 @@ class HomeModule extends Module {
   @override
   void routes(r) {
     r.child('/', child: (context) => const HomePage());
+    r.child('/detail', child: (context) => DetailPage(list: r.args.data));
   }
 }

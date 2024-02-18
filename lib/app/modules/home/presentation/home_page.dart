@@ -4,7 +4,6 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:test_asset_variation/app/modules/home/presentation/bloc/home_bloc.dart';
 import 'package:test_asset_variation/app/modules/home/presentation/bloc/home_event.dart';
 import 'package:test_asset_variation/app/modules/home/presentation/bloc/home_state.dart';
-import 'package:test_asset_variation/app/modules/home/presentation/widgets/dropdown_widget.dart';
 import 'package:test_asset_variation/app/modules/shared/utils/colors_pallete.dart';
 
 import '../../shared/utils/sizes.dart';
@@ -54,6 +53,10 @@ class _HomePageState extends State<HomePage> {
             );
             bloc.add(GetHomeAssetsEvent());
           }
+          if (homeState is SuccessAssetVariationState) {
+            Modular.to.pushNamed('/detail', arguments: homeState.data);
+            bloc.add(GetHomeAssetsEvent());
+          }
         },
         bloc: bloc,
         builder: (context, homeState) {
@@ -65,28 +68,40 @@ class _HomePageState extends State<HomePage> {
             );
           }
           if (homeState is SuccessAssetsState) {
-            return Column(
-              children: [
-                DropdownWidget(
-                  listAsset: homeState.data,
-                  title: title,
-                  onChanged: (value) {
-                    title = value;
-                    setState(() {
-                      title = value;
-                    });
-                    bloc.add(GetHomeAssetVariationEvent(asset: value!));
+            return ListView.builder(
+              itemCount: homeState.data.length,
+              shrinkWrap: true,
+              padding: const EdgeInsets.only(top: Sizes.x2),
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: (){
+                    bloc.add(GetHomeAssetVariationEvent(asset: homeState.data[index].symbol));
                   },
-                ),
-              ],
-            );
-          }
-
-          if (homeState is SuccessAssetVariationState) {
-            return TextViewWidget(
-              label: homeState.data.first.timeStamp.toString(),
-              color: ColorsPallete.redColor,
-              size: Sizes.x4,
+                  child: Container(
+                    height: 64,
+                    width: double.infinity,
+                    margin: const EdgeInsets.all(Sizes.x1),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Sizes.x1),
+                      border: Border.all(color: ColorsPallete.primaryColor)
+                    ),
+                    child: Center(
+                      child: ListTile(
+                        title: TextViewWidget(
+                          label: homeState.data[index].symbol,
+                          color: ColorsPallete.primaryColor,
+                          size: Sizes.x2,
+                        ),
+                        trailing: TextViewWidget(
+                          label: '${homeState.data[index].price}',
+                          color: ColorsPallete.primaryColor,
+                          size: Sizes.x2,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
             );
           }
 

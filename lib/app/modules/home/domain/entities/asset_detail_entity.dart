@@ -5,7 +5,6 @@ class AssetDetailEntity {
   final int? volume;
   final double? high;
   final double? low;
-  final double? adjclose;
 
   AssetDetailEntity({
     this.timeStamp,
@@ -14,6 +13,5 @@ class AssetDetailEntity {
     this.volume,
     this.high,
     this.low,
-    this.adjclose,
   });
 }
