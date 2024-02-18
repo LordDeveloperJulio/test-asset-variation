@@ -14,11 +14,18 @@ class HomeModule extends Module {
     //BLOC
     i.add(
       () => HomeBloc(
-          getAssetVariationUseCase: Modular.get<GetAssetVariationUseCase>()),
+        getAssetVariationUseCase: Modular.get<GetAssetVariationUseCase>(),
+        getAssetsUseCase: Modular.get<GetAssetsUseCase>(),
+      ),
     );
     //USECASE
-    i.add<GetAssetVariationUseCase>(() => GetAssetVariationUseCaseImpl(
-        repository: Modular.get<AssetVariationRepository>()),
+    i.add<GetAssetVariationUseCase>(
+      () => GetAssetVariationUseCaseImpl(
+          repository: Modular.get<AssetVariationRepository>()),
+    );
+    i.add<GetAssetsUseCase>(
+          () => GetAssetsUseCaseImpl(
+          repository: Modular.get<AssetVariationRepository>()),
     );
     //REPOSITORY
     i.add<AssetVariationRepository>(
@@ -27,10 +34,9 @@ class HomeModule extends Module {
     );
     //DATASOURCE
     i.add<AssetVariationRemoteDataSource>(
-      () =>
-          AssetVariationRemoteDataSourceImpl(networkClient: CoreNetwork.instance),
+      () => AssetVariationRemoteDataSourceImpl(
+          networkClient: CoreNetwork.instance),
     );
-
   }
 
   @override

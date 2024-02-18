@@ -21,4 +21,15 @@ class AssetVariationRemoteDataSourceImpl
       return Left(Exception());
     }
   }
+
+  @override
+  Future<Either<Exception, List<dynamic>>> getAssets() async {
+    try {
+      final result = await networkClient.get(ApiRoutes.getAssets);
+
+      return Right(result.data);
+    } catch (error) {
+      return Left(Exception());
+    }
+  }
 }

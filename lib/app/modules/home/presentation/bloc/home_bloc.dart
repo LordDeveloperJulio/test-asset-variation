@@ -6,12 +6,14 @@ import 'home_event.dart';
 import 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc({required this.getAssetVariationUseCase})
+  HomeBloc({required this.getAssetVariationUseCase, required this.getAssetsUseCase})
       : super(InitialHomeState()) {
     on<GetHomeAssetVariationEvent>(getAssetVariation);
+    on<GetHomeAssetsEvent>(getAssets);
   }
 
   final GetAssetVariationUseCase getAssetVariationUseCase;
+  final GetAssetsUseCase getAssetsUseCase;
 
   Future<void> getAssetVariation(
     GetHomeAssetVariationEvent event,
@@ -22,7 +24,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         await getAssetVariationUseCase.call();
     response.fold(
       (l) => emit(FailureHomeState(error: l.toString())),
-      (r) => emit(SuccessHomeState(data: r)),
+      (r) => emit(SuccessAssetVariationState(data: r)),
+    );
+  }
+
+  Future<void> getAssets(
+    GetHomeAssetsEvent event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(LoadingAssetsState());
+    Either<Exception, List<AssetEntity>> response = await getAssetsUseCase.call();
+    response.fold(
+      (l) => emit(FailureHomeState(error: l.toString())),
+      (r) => emit(SuccessAssetsState(data: r)),
     );
   }
 }

@@ -9,7 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   CoreNetwork.init(
-    baseUrl: 'https://query2.finance.yahoo.com',
+    baseUrl: 'https://financialmodelingprep.com/',
     isDebug: false,
   );
   runApp(ModularApp(module: AppModule(), child: const AppWidget()));

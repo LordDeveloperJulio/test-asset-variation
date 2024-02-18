@@ -6,10 +6,18 @@ class InitialHomeState extends HomeState {}
 
 class LoadingHomeState extends HomeState {}
 
-class SuccessHomeState extends HomeState {
+class LoadingAssetsState extends HomeState {}
+
+class SuccessAssetVariationState extends HomeState {
   final ChartEntity data;
 
-  SuccessHomeState({required this.data});
+  SuccessAssetVariationState({required this.data});
+}
+
+class SuccessAssetsState extends HomeState {
+  final List<AssetEntity> data;
+
+  SuccessAssetsState({required this.data});
 }
 
 class FailureHomeState extends HomeState {

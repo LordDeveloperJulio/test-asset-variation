@@ -1,9 +1,9 @@
 class AssetEntity {
   final String symbol;
   final String? name;
-  final double price;
+  final dynamic price;
   final String? exchange;
-  final String exchangeShortName;
+  final String? exchangeShortName;
   final String type;
 
   AssetEntity({
@@ -11,7 +11,7 @@ class AssetEntity {
     this.name,
     required this.price,
     this.exchange,
-    required this.exchangeShortName,
+    this.exchangeShortName,
     required this.type,
   });
 }
