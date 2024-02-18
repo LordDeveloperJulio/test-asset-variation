@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:test_asset_variation/app/modules/home/presentation/bloc/home_bloc.dart';
 import 'package:test_asset_variation/app/modules/home/presentation/bloc/home_event.dart';
 import 'package:test_asset_variation/app/modules/home/presentation/bloc/home_state.dart';
@@ -26,18 +25,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     bloc.add(GetHomeAssetsEvent());
-    data = [
-      _ChartData('CHN', 38, 10, 21, 29),
-      _ChartData('GER', 32, 12, 19, 30),
-      _ChartData('RUS', 37, 7, 17, 24),
-      _ChartData('BRZ', 34, 9, 16, 27),
-      _ChartData('IND', 35, 13, 18, 31)
-    ];
-    _tooltip = TooltipBehavior(enable: true);
   }
-
-  late List<_ChartData> data;
-  late TooltipBehavior _tooltip;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +41,20 @@ class _HomePageState extends State<HomePage> {
       ),
       backgroundColor: ColorsPallete.backgroundColor,
       body: BlocConsumer<HomeBloc, HomeState>(
-        listener: (context, homeState) {},
+        listener: (context, homeState) {
+          if (homeState is FailureHomeState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: TextViewWidget(
+                  label: 'Error: ${homeState.error}',
+                  size: Sizes.x2,
+                  color: ColorsPallete.redColor,
+                ),
+              ),
+            );
+            bloc.add(GetHomeAssetsEvent());
+          }
+        },
         bloc: bloc,
         builder: (context, homeState) {
           if (homeState is LoadingAssetsState) {
@@ -74,26 +75,18 @@ class _HomePageState extends State<HomePage> {
                     setState(() {
                       title = value;
                     });
+                    bloc.add(GetHomeAssetVariationEvent(asset: value!));
                   },
                 ),
-                SfCartesianChart(
-                  primaryXAxis: const CategoryAxis(),
-                  primaryYAxis:
-                      const NumericAxis(minimum: 0, maximum: 40, interval: 10),
-                  tooltipBehavior: _tooltip,
-                  series: <CartesianSeries<_ChartData, String>>[
-                    CandleSeries<_ChartData, String>(
-                      dataSource: data,
-                      xValueMapper: (_ChartData data, _) => data.x,
-                      highValueMapper: (_ChartData data, _) => data.high,
-                      lowValueMapper: (_ChartData data, _) => data.low,
-                      openValueMapper: (_ChartData data, _) => data.open,
-                      closeValueMapper: (_ChartData data, _) => data.close,
-                      name: 'Gold',
-                    ),
-                  ],
-                ),
               ],
+            );
+          }
+
+          if (homeState is SuccessAssetVariationState) {
+            return TextViewWidget(
+              label: homeState.data.first.timeStamp.toString(),
+              color: ColorsPallete.redColor,
+              size: Sizes.x4,
             );
           }
 
@@ -102,14 +95,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
-
-class _ChartData {
-  _ChartData(this.x, this.high, this.low, this.open, this.close);
-
-  final String x;
-  final double high;
-  final double low;
-  final double open;
-  final double close;
 }

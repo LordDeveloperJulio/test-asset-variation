@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 
-import '../../entities/chart_entity.dart';
+import '../../domain.dart';
 
 abstract class GetAssetVariationUseCase {
-  Future<Either<Exception, ChartEntity>> call();
+  Future<Either<Exception, List<AssetDetailEntity>>> call({required String asset});
 }

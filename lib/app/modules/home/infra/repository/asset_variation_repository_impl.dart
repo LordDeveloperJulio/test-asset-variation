@@ -1,10 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:test_asset_variation/app/modules/home/domain/entities/asset_entity.dart';
 import 'package:test_asset_variation/app/modules/home/infra/mappers/asset_response.dart';
 
 import '../../data/remote/asset_variation_remote_data_source.dart';
-import '../../domain/entities/chart_entity.dart';
-import '../mappers/chart_response.dart';
+import '../../domain/domain.dart';
+import '../mappers/asset_detail_response.dart';
 import 'asset_variation_repository.dart';
 
 class AssetVariationRepositoryImpl implements AssetVariationRepository {
@@ -15,17 +14,22 @@ class AssetVariationRepositoryImpl implements AssetVariationRepository {
   });
 
   @override
-  Future<Either<Exception, ChartEntity>> getAssetVariation() async {
-    final result = await dataSource.getAssetVariation();
+  Future<Either<Exception, List<AssetDetailEntity>>> getAssetVariation(
+      {required String asset}) async {
+    final result = await dataSource.getAssetVariation(asset: asset);
     return result.fold(
       (Exception exception) {
         return left(exception);
       },
-      (Map<String, dynamic> map) {
+          (List<dynamic> list) {
         try {
-          return right(ChartResponse.fromJson(map).toEntity());
+          List<AssetDetailEntity> listAssets = [];
+          for (int i = 0; i < list.length; i++) {
+            listAssets.add(AssetDetailResponse.fromJson(list[i]).toEntity());
+          }
+          return right(listAssets);
         } catch (e) {
-          return left(Exception());
+          return left(Exception(e));
         }
       },
     );
@@ -39,13 +43,13 @@ class AssetVariationRepositoryImpl implements AssetVariationRepository {
         print(exception.toString());
         return left(exception);
       },
-      (List<dynamic> map) {
+      (List<dynamic> list) {
         try {
-          List<AssetEntity> list = [];
-          for(int i = 0; i < 1000; i++){
-            list.add(AssetResponse.fromJson(map[i]).toEntity());
+          List<AssetEntity> listAssets = [];
+          for (int i = 0; i < 1000; i++) {
+            listAssets.add(AssetResponse.fromJson(list[i]).toEntity());
           }
-          return right(list);
+          return right(listAssets);
         } catch (e) {
           return left(Exception(e));
         }

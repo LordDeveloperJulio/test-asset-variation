@@ -1,4 +1,6 @@
 class ApiRoutes {
-  static const String getAssetVariation = '/v8/finance/chart/PETR4.SA';
-  static const String getAssets = '/api/v3/stock/list?apikey=TpNwqJjfZX4aJVbzhrbbRUTSfIa96SQc';
+  static const String baseUrl = 'https://financial-bbce1e34cd1d.herokuapp.com/';
+
+  static const String getAssetVariation = 'detailStock?active=';
+  static const String getAssets = 'allStocks';
 }
