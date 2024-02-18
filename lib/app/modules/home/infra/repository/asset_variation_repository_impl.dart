@@ -42,7 +42,7 @@ class AssetVariationRepositoryImpl implements AssetVariationRepository {
       (List<dynamic> map) {
         try {
           List<AssetEntity> list = [];
-          for(int i = 0; i < map.length; i++){
+          for(int i = 0; i < 1000; i++){
             list.add(AssetResponse.fromJson(map[i]).toEntity());
           }
           return right(list);
