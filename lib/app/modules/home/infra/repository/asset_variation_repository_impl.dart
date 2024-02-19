@@ -1,6 +1,8 @@
+import 'package:core_network/implementation/exceptions/http_exceptions.dart';
 import 'package:dartz/dartz.dart';
 import 'package:test_asset_variation/app/modules/home/infra/mappers/asset_response.dart';
 
+import '../../../shared/exceptions/exceptions.dart';
 import '../../data/remote/asset_variation_remote_data_source.dart';
 import '../../domain/domain.dart';
 import '../mappers/asset_detail_response.dart';
@@ -14,14 +16,15 @@ class AssetVariationRepositoryImpl implements AssetVariationRepository {
   });
 
   @override
-  Future<Either<Exception, List<AssetDetailEntity>>> getAssetVariation(
+  Future<Either<NetworkExceptions, List<AssetDetailEntity>>> getAssetVariation(
       {required String asset}) async {
     final result = await dataSource.getAssetVariation(asset: asset);
     return result.fold(
-      (Exception exception) {
-        return left(exception);
+      (HttpExceptions exception) {
+        return left(verifyException(
+            statusCode: exception.statusCode, data: exception.data));
       },
-          (List<dynamic> list) {
+      (List<dynamic> list) {
         try {
           List<AssetDetailEntity> listAssets = [];
           for (int i = 0; i < list.length; i++) {
@@ -29,19 +32,19 @@ class AssetVariationRepositoryImpl implements AssetVariationRepository {
           }
           return right(listAssets);
         } catch (e) {
-          return left(Exception(e));
+          return left(NetworkUnknownException());
         }
       },
     );
   }
 
   @override
-  Future<Either<Exception, List<AssetEntity>>> getAssets() async {
+  Future<Either<NetworkExceptions, List<AssetEntity>>> getAssets() async {
     final result = await dataSource.getAssets();
     return result.fold(
-      (Exception exception) {
-        print(exception.toString());
-        return left(exception);
+      (HttpExceptions exception) {
+        return left(verifyException(
+            statusCode: exception.statusCode, data: exception.data));
       },
       (List<dynamic> list) {
         try {
@@ -51,7 +54,7 @@ class AssetVariationRepositoryImpl implements AssetVariationRepository {
           }
           return right(listAssets);
         } catch (e) {
-          return left(Exception(e));
+          return left(NetworkUnknownException());
         }
       },
     );

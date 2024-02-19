@@ -1,4 +1,5 @@
 import 'package:core_network/api/network_client.dart';
+import 'package:core_network/implementation/exceptions/http_exceptions.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../shared/api_routes.dart';
@@ -13,25 +14,25 @@ class AssetVariationRemoteDataSourceImpl
   });
 
   @override
-  Future<Either<Exception, List<dynamic>>> getAssetVariation(
+  Future<Either<HttpExceptions, List<dynamic>>> getAssetVariation(
       {required String asset}) async {
     try {
       final result =
           await networkClient.get(ApiRoutes.getAssetVariation + asset);
       return Right(result.data);
-    } catch (error) {
-      return Left(Exception(error));
+    } on HttpExceptions catch (error) {
+      return Left(error);
     }
   }
 
   @override
-  Future<Either<Exception, List<dynamic>>> getAssets() async {
+  Future<Either<HttpExceptions, List<dynamic>>> getAssets() async {
     try {
       final result = await networkClient.get(ApiRoutes.getAssets);
 
       return Right(result.data);
-    } catch (error) {
-      return Left(Exception());
+    } on HttpExceptions catch (error) {
+      return Left(error);
     }
   }
 }

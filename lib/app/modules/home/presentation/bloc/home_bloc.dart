@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:test_asset_variation/app/modules/home/domain/domain.dart';
 
+import '../../../shared/exceptions/exceptions.dart';
 import 'home_event.dart';
 import 'home_state.dart';
 
@@ -21,10 +22,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     emit(LoadingAssetsState());
-    Either<Exception, List<AssetDetailEntity>> response =
+    Either<NetworkExceptions, List<AssetDetailEntity>> response =
         await getAssetVariationUseCase.call(asset: event.asset);
     response.fold(
-      (l) => emit(FailureHomeState(error: l.toString())),
+      (NetworkExceptions networkExceptions) => emit(FailureHomeState(
+        error: networkExceptions.message!,
+      )),
       (r) => emit(SuccessAssetVariationState(data: r)),
     );
   }
@@ -34,10 +37,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     emit(LoadingAssetsState());
-    Either<Exception, List<AssetEntity>> response =
+    Either<NetworkExceptions, List<AssetEntity>> response =
         await getAssetsUseCase.call();
     response.fold(
-      (l) => emit(FailureHomeState(error: l.toString())),
+      (NetworkExceptions networkExceptions) => emit(FailureHomeState(
+        error: networkExceptions.message!,
+      )),
       (r) => emit(SuccessAssetsState(data: r)),
     );
   }
