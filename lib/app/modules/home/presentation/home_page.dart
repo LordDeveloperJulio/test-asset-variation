@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         backgroundColor: ColorsPallete.primaryColor,
         title: const TextViewWidget(
-          label: 'Home',
+          label: 'Actives',
           size: Sizes.x3,
           color: ColorsPallete.backgroundColor,
         ),
