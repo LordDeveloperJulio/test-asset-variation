@@ -5,6 +5,8 @@ class AssetDetailEntity {
   final int? volume;
   final double? high;
   final double? low;
+  final double? percentageVariation;
+  final double? percentageChangeSinceFirstTradingDay;
 
   AssetDetailEntity({
     this.timeStamp,
@@ -13,5 +15,7 @@ class AssetDetailEntity {
     this.volume,
     this.high,
     this.low,
+    this.percentageVariation,
+    this.percentageChangeSinceFirstTradingDay,
   });
 }

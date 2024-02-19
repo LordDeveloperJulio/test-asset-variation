@@ -7,6 +7,8 @@ class AssetDetailResponse {
   final int? volume;
   final double? high;
   final double? low;
+  final double? percentageVariation;
+  final double? percentageChangeSinceFirstTradingDay;
 
   AssetDetailResponse({
     this.timeStamp,
@@ -15,6 +17,8 @@ class AssetDetailResponse {
     this.volume,
     this.high,
     this.low,
+    this.percentageVariation,
+    this.percentageChangeSinceFirstTradingDay,
   });
 
   factory AssetDetailResponse.fromJson(Map<dynamic, dynamic> json) =>
@@ -25,6 +29,8 @@ class AssetDetailResponse {
         volume: json["volume"],
         high: json["high"],
         low: json["low"],
+        percentageVariation: json["percentageVariation"],
+        percentageChangeSinceFirstTradingDay: json["percentageChangeSinceFirstTradingDay"],
       );
 
   AssetDetailEntity toEntity() {
@@ -35,6 +41,8 @@ class AssetDetailResponse {
       volume: volume,
       high: high,
       low: low,
+      percentageVariation: percentageVariation,
+      percentageChangeSinceFirstTradingDay: percentageChangeSinceFirstTradingDay,
     );
   }
 }

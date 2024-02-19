@@ -1,5 +1,7 @@
+import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:test_asset_variation/app/modules/shared/utils/colors_pallete.dart';
 import 'package:test_asset_variation/app/modules/shared/widgets/text_view_widget.dart';
@@ -23,10 +25,7 @@ class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     createList();
-    _zoomPanBehavior = ZoomPanBehavior(
-      // Enables pinch zooming
-        enablePinching: true
-    );
+    _zoomPanBehavior = ZoomPanBehavior(enablePinching: true);
     super.initState();
   }
 
@@ -34,7 +33,7 @@ class _DetailPageState extends State<DetailPage> {
     for (int i = 0; i < widget.list.length; i++) {
       data.add(
         ChartDataEntity(
-          x: DateTime.fromMicrosecondsSinceEpoch(widget.list[i].timeStamp!),
+          x: DateTime.fromMillisecondsSinceEpoch(widget.list[i].timeStamp!),
           high: widget.list[i].high ?? 0,
           low: widget.list[i].low ?? 0,
           open: widget.list[i].open ?? 0,
@@ -42,6 +41,12 @@ class _DetailPageState extends State<DetailPage> {
         ),
       );
     }
+  }
+
+  String returnDate(int? dateParam) {
+    int timestampMicroseconds = dateParam! * 1000000;
+    DateTime dateTimeFromMicroseconds = DateTime.fromMicrosecondsSinceEpoch(timestampMicroseconds);
+    return DateFormat('dd/MM/yyyy').format(dateTimeFromMicroseconds);
   }
 
   @override
@@ -66,38 +71,81 @@ class _DetailPageState extends State<DetailPage> {
         ),
       ),
       backgroundColor: ColorsPallete.backgroundColor,
-      body: SfCartesianChart(
-          primaryXAxis: const DateTimeAxis(),
-          zoomPanBehavior: _zoomPanBehavior,
-          series: <CartesianSeries>[
-            // Renders CandleSeries
-            CandleSeries<ChartDataEntity, DateTime>(
-              dataSource: data,
-              xValueMapper: (ChartDataEntity data, _) => data.x,
-              lowValueMapper: (ChartDataEntity data, _) => data.low,
-              highValueMapper: (ChartDataEntity data, _) => data.high,
-              openValueMapper: (ChartDataEntity data, _) => data.open,
-              closeValueMapper: (ChartDataEntity data, _) => data.close,
-
-            )
-          ]
+      body: Column(
+        children: [
+          SfCartesianChart(
+            primaryXAxis: const DateTimeAxis(),
+            zoomPanBehavior: _zoomPanBehavior,
+            series: <CartesianSeries>[
+              CandleSeries<ChartDataEntity, DateTime>(
+                dataSource: data,
+                xValueMapper: (ChartDataEntity data, _) => data.x,
+                lowValueMapper: (ChartDataEntity data, _) => data.low,
+                highValueMapper: (ChartDataEntity data, _) => data.high,
+                openValueMapper: (ChartDataEntity data, _) => data.open,
+                closeValueMapper: (ChartDataEntity data, _) => data.close,
+              )
+            ],
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Sizes.x2),
+              child: DataTable2(
+                columnSpacing: 12,
+                horizontalMargin: 12,
+                minWidth: 600,
+                columns: const [
+                  DataColumn2(
+                    label: Text('Date'),
+                    size: ColumnSize.L,
+                  ),
+                  DataColumn(
+                    label: Text('Open'),
+                    numeric: true,
+                  ),
+                  DataColumn(
+                    label: Text('Close'),
+                    numeric: true,
+                  ),
+                  DataColumn(
+                    label: Text('High'),
+                    numeric: true,
+                  ),
+                  DataColumn(
+                    label: Text('Low'),
+                    numeric: true,
+                  ),
+                  DataColumn2(
+                    label: Text('Day Variation'),
+                    size: ColumnSize.L,
+                  ),
+                  DataColumn2(
+                    label: Text('First Trading'),
+                    size: ColumnSize.L,
+                  ),
+                ],
+                rows: widget.list
+                    .map(
+                      ((element) => DataRow(
+                            cells: <DataCell>[
+                              DataCell(
+                                  Text(returnDate(element.timeStamp) ?? '')),
+                              DataCell(Text('${element.open}')),
+                              DataCell(Text('${element.close}')),
+                              DataCell(Text('${element.high}')),
+                              DataCell(Text('${element.low}')),
+                              DataCell(Text('% ${element.percentageVariation}')),
+                              DataCell(Text(
+                                  '% ${element.percentageChangeSinceFirstTradingDay}')),
+                            ],
+                          )),
+                    )
+                    .toList(),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
-}
-
-class ChartDataEntity {
-  final DateTime x;
-  final double high;
-  final double low;
-  final double open;
-  final double close;
-
-  ChartDataEntity({
-    required this.x,
-    required this.high,
-    required this.low,
-    required this.open,
-    required this.close,
-  });
 }
