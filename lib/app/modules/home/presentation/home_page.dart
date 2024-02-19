@@ -18,7 +18,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final HomeBloc bloc = Modular.get<HomeBloc>();
-  String? title;
 
   @override
   void initState() {
@@ -53,10 +52,6 @@ class _HomePageState extends State<HomePage> {
             );
             bloc.add(GetHomeAssetsEvent());
           }
-          if (homeState is SuccessAssetVariationState) {
-            Modular.to.pushNamed('/detail', arguments: homeState.data);
-            bloc.add(GetHomeAssetsEvent());
-          }
         },
         bloc: bloc,
         builder: (context, homeState) {
@@ -74,17 +69,19 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.only(top: Sizes.x2),
               itemBuilder: (context, index) {
                 return InkWell(
-                  onTap: (){
-                    bloc.add(GetHomeAssetVariationEvent(asset: homeState.data[index].symbol));
+                  onTap: () {
+                    Modular.to.pushNamed(
+                      '/detail',
+                      arguments: homeState.data[index].symbol,
+                    );
                   },
                   child: Container(
                     height: 64,
                     width: double.infinity,
                     margin: const EdgeInsets.all(Sizes.x1),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(Sizes.x1),
-                      border: Border.all(color: ColorsPallete.primaryColor)
-                    ),
+                        borderRadius: BorderRadius.circular(Sizes.x1),
+                        border: Border.all(color: ColorsPallete.primaryColor)),
                     child: Center(
                       child: ListTile(
                         title: TextViewWidget(

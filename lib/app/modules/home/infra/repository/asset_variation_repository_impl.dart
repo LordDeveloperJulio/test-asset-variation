@@ -5,7 +5,6 @@ import 'package:test_asset_variation/app/modules/home/infra/mappers/asset_respon
 import '../../../shared/exceptions/exceptions.dart';
 import '../../data/remote/asset_variation_remote_data_source.dart';
 import '../../domain/domain.dart';
-import '../mappers/asset_detail_response.dart';
 import 'asset_variation_repository.dart';
 
 class AssetVariationRepositoryImpl implements AssetVariationRepository {
@@ -14,29 +13,6 @@ class AssetVariationRepositoryImpl implements AssetVariationRepository {
   AssetVariationRepositoryImpl({
     required this.dataSource,
   });
-
-  @override
-  Future<Either<NetworkExceptions, List<AssetDetailEntity>>> getAssetVariation(
-      {required String asset}) async {
-    final result = await dataSource.getAssetVariation(asset: asset);
-    return result.fold(
-      (HttpExceptions exception) {
-        return left(verifyException(
-            statusCode: exception.statusCode, data: exception.data));
-      },
-      (List<dynamic> list) {
-        try {
-          List<AssetDetailEntity> listAssets = [];
-          for (int i = 0; i < list.length; i++) {
-            listAssets.add(AssetDetailResponse.fromJson(list[i]).toEntity());
-          }
-          return right(listAssets);
-        } catch (e) {
-          return left(NetworkUnknownException());
-        }
-      },
-    );
-  }
 
   @override
   Future<Either<NetworkExceptions, List<AssetEntity>>> getAssets() async {

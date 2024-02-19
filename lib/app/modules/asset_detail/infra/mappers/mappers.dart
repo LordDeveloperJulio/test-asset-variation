@@ -1,0 +1,1 @@
+export 'asset_detail_response.dart';

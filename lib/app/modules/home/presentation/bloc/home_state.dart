@@ -8,12 +8,6 @@ class LoadingHomeState extends HomeState {}
 
 class LoadingAssetsState extends HomeState {}
 
-class SuccessAssetVariationState extends HomeState {
-  final List<AssetDetailEntity> data;
-
-  SuccessAssetVariationState({required this.data});
-}
-
 class SuccessAssetsState extends HomeState {
   final List<AssetEntity> data;
 
