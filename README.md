@@ -20,3 +20,6 @@ previous day.
 2. First trading - Corresponds to the percentage of price variation on the current day and the first 
 session of the filter.
 
+# Download Apk App
+LINK: https://drive.google.com/file/d/1hAGTnbcj4A3wXnpkRNewNuaLhHWc-zkD/view?usp=sharing
+
