@@ -42,8 +42,6 @@ NetworkExceptions verifyException(
       return NetworkNotFoundException();
     case 406:
       return NetworkNotAcceptableException(data: data);
-    case null:
-      return NoConnectionException();
     default:
       return NetworkUnknownException();
   }
